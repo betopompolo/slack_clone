@@ -1,39 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'group_chat_messages.provider.dart';
 import 'message.dart';
+import 'user_messages_tile.component.dart';
 
-class ChatView extends StatelessWidget {
+class ChatView extends ConsumerWidget {
   const ChatView({required this.messages, Key? key}) : super(key: key);
 
   final List<Message> messages;
 
   @override
-  Widget build(BuildContext context) {
-    return Placeholder(
-      child: Text('${messages.length} messages'),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final chatMessages = ref.read(groupChatMessagesProvider(messages));
+
+    return ListView.separated(
+      itemBuilder: (context, index) {
+        final chatMessage = chatMessages[index];
+
+        return UserMessagesTile(
+          userMessages: chatMessage.messages,
+        );
+      },
+      itemCount: chatMessages.length,
+      separatorBuilder: (context, index) => const SizedBox(height: 16),
     );
   }
 }
-
-final mockedEmitter = User(
-  id: "user1",
-  name: "Beto",
-  imageUrl: "https://ca.slack-edge.com/T0342JUTV-UAKNHTD8V-a3caad65e4fa-512",
-);
-final List<Message> mockedMessages = [
-  Message(
-    id: "1",
-    emitter: mockedEmitter,
-    text: "Olá!",
-  ),
-  Message(
-    id: "2",
-    emitter: mockedEmitter,
-    text: "Tudo bem?",
-  ),
-  Message(
-    id: "3",
-    emitter: mockedEmitter,
-    text: "Teste 2",
-  ),
-];

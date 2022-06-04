@@ -1,19 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:slack_clone/chat/chat_view.component.dart';
 import 'package:slack_clone/chat/message.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: ChatView(messages: mockedMessages),
-    );
-  }
-}
-
-// TODO: remove
 final mockUser1 = User(
   id: "user1",
   name: "Beto",
