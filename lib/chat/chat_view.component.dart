@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:slack_clone/shared/widgets/widgets.dart';
 
 import 'group_chat_messages.provider.dart';
 import 'message.dart';
@@ -14,16 +15,23 @@ class ChatView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final chatMessages = ref.read(groupChatMessagesProvider(messages));
 
-    return ListView.separated(
+    return ListView.builder(
       itemBuilder: (context, index) {
         final chatMessage = chatMessages[index];
 
-        return UserMessagesTile(
-          userMessages: chatMessage.messages,
-        );
+        return MouseHoverBuilder(builder: (context, isMouseOver) {
+          return HighlightContainer(
+            isHighlighted: isMouseOver,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: UserMessagesTile(
+                userMessages: chatMessage.messages,
+              ),
+            ),
+          );
+        });
       },
       itemCount: chatMessages.length,
-      separatorBuilder: (context, index) => const SizedBox(height: 16),
     );
   }
 }
